@@ -1,7 +1,6 @@
-# gymnalyze: Video Pose Analysis Tool
+# Gymnalyze
 
-## Overview
-gymnalyze is a Python package designed to analyze videos of people training and assess their poses to help improve their movements. Utilizing MediaPipe, this package provides tools for pose estimation and analysis, making it easier for users to understand and enhance their physical performance.
+Python package designed to analyze videos of people training and assess their poses to help improve their movements. Utilizing MediaPipe, this package provides tools for pose estimation and analysis, making it easier for users to understand and enhance their physical performance.
 
 ## Installation
 To install the required dependencies, run the following command:
@@ -35,4 +34,5 @@ To use the gymnalyze package, you can follow these steps:
 Contributions are welcome! Please feel free to submit a pull request or open an issue for any enhancements or bug fixes.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for more details.
+
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) file for details.
