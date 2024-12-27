@@ -1,6 +1,13 @@
 import cv2
+import mediapipe as mp
+import numpy as np
+from gymnalyze.models.pose import Pose
 
 def main():
+
+    # Initialize MediaPipe Pose
+    mp_pose = mp.solutions.pose
+    pose = mp_pose.Pose()
 
     # Video path
     video_path = '.demo_data/kipping-pull-up-complete.mp4'
@@ -35,6 +42,13 @@ def main():
                 break
 
             frame_pos = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
+            # Convert the frame to RGB
+            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            # Perform pose detection
+            results = pose.process(frame_rgb)
+
+            my_pose = Pose(results.pose_landmarks.landmark)
 
             # Display the resulting frame
             cv2.imshow('Demo', frame)
