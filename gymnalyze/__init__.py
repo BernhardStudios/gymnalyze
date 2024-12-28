@@ -2,6 +2,6 @@
 
 from .analyzer import PoseAnalyzer
 from .pose_estimator import PoseEstimator
-from .utils import load_video, draw_landmarks
+from .utils import load_video, Color
 
-__all__ = ['PoseAnalyzer', 'PoseEstimator', 'load_video', 'draw_landmarks']
+__all__ = ['PoseAnalyzer', 'PoseEstimator', 'load_video', 'Color']

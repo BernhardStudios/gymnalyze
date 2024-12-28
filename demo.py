@@ -2,6 +2,8 @@ import cv2
 import mediapipe as mp
 import numpy as np
 from gymnalyze.models.pose import Pose
+from gymnalyze.utils import Color
+from gymnalyze.enums import BodySegmentName
 
 def main():
 
@@ -32,7 +34,7 @@ def main():
     playing = True
     frame_pos = 0
 
-    DEFAULT_DELAY = 25 # Initial delay in milliseconds
+    DEFAULT_DELAY = 25 * 3 # Initial delay in milliseconds
     delay = DEFAULT_DELAY  
 
     while cap.isOpened():
@@ -48,7 +50,29 @@ def main():
             # Perform pose detection
             results = pose.process(frame_rgb)
 
-            my_pose = Pose(results.pose_landmarks.landmark)
+            my_pose = Pose(results, img_shape=frame_rgb.shape)
+
+            # Define a white canvas with same dimensions as the frame
+            canvas = np.ones_like(frame) * 255
+
+            # Draw body segments on the frame
+            for segment in my_pose.body_segments.values():
+                # if segment.name != BodySegmentName.LEFT_UPPER_ARM.name and segment.name != BodySegmentName.LEFT_FOREARM.name:
+                #     continue    
+
+                segment.draw_vertical_axis_angle(canvas, radius=50, color=Color.LIME, thickness=2)
+                segment.draw_horizontal_axis_angle(canvas, radius=50, color=Color.GREEN, thickness=2)
+                segment.draw(canvas, color=Color.ORANGE, thickness=2)
+
+            # Draw pose landmarks on the frame
+            for landmark in my_pose.landmarks.values():
+                continue
+                landmark.draw(canvas, color=Color.LIME, radius=5, thickness=-1)
+
+            # Blend the canvas with the frame
+            # Define transparency as 0.5
+            transparency = 0.25
+            frame = cv2.addWeighted(frame, transparency, canvas, 1-transparency, 0)
 
             # Display the resulting frame
             cv2.imshow('Demo', frame)
