@@ -1,3 +1,5 @@
+import numpy as np
+import cv2
 from typing import Tuple, Optional
 
 class Landmark:
@@ -33,3 +35,7 @@ class Landmark:
             "width": self.width,
             "height": self.height
         }
+
+    def draw(self, image, color:Tuple[int, int, int]=(0, 255, 0), radius=5, thickness=-1)->np.ndarray:
+        cv2.circle(image, self.pixel_coordinates(image.shape[1], image.shape[0]), radius, color, thickness)
+        return image

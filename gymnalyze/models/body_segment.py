@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 from typing import Optional, Tuple
 from .landmark import Landmark
+from ..utils import get_point_on_ellipse
 
 class BodySegment:
 
@@ -97,3 +98,44 @@ class BodySegment:
             "end_landmark": self.end_landmark.to_dict(),
             "name": self.name
         }
+
+    def draw(self, image, color:Tuple[int, int, int]=(0, 255, 0), thickness=2)->np.ndarray:
+        self.start_landmark.draw(image, color, thickness=-1)
+        self.end_landmark.draw(image, color, thickness=-1)
+        cv2.line(image, self.start_landmark.pixel_coordinates(image.shape[1], image.shape[0]), self.end_landmark.pixel_coordinates(image.shape[1], image.shape[0]), color, thickness)
+        return image
+
+    def _draw_angle(self, image, angle, radius=50, color:Tuple[int, int, int]=(0, 255, 0), thickness=2)->np.ndarray:
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        pos = self.start_landmark.pixel_coordinates(image.shape[1], image.shape[0])
+        cv2.putText(image, f"{int(angle)}", pos, font, 1, color, thickness, cv2.LINE_AA)
+        start_angle = 0
+        end_angle = angle
+        rotation_angle = - self.horizontal_axis_angle()
+        cv2.ellipse(image, pos, (radius, radius), rotation_angle, start_angle, end_angle, color, thickness)
+                
+        # Mark the start point
+        start_point = get_point_on_ellipse(pos, (radius, radius), rotation_angle, start_angle)
+        cv2.circle(image, start_point, 5, (255, 0, 0), -1)  # Blue circle for start point
+
+        # Mark the end point
+        end_point = get_point_on_ellipse(pos, (radius, radius), rotation_angle, end_angle)
+        cv2.circle(image, end_point, 5, (0, 0, 255), -1)  # Red circle for end point
+
+        return image
+
+    def draw_vertical_axis_angle(self, image, radius=50, color:Tuple[int, int, int]=(0,255,0), thickness=2)->np.ndarray:
+        self.vertical_body_segment(image.shape[0]).draw(image, color, thickness)
+        self.draw(image, color, thickness)
+        return self._draw_angle(image, self.vertical_axis_angle(), radius, color, thickness)
+
+    def draw_horizontal_axis_angle(self, image, radius=50, color:Tuple[int, int, int]=(0,255,0), thickness=2)->np.ndarray:
+        self.horizontal_body_segment(image.shape[1]).draw(image)
+        self.draw(image, color, thickness)
+        return self._draw_angle(image, self.horizontal_axis_angle(), radius, color, thickness)
+
+    def draw_angle_between(self, image, other, radius=50, color:Tuple[int, int, int]=(0,255,0), thickness=2)->np.ndarray:
+        other.draw(image, color, thickness)
+        self.draw(image, color, thickness)
+        # todo: start point should be common to both segments
+        return self._draw_angle(image, self.angle_between(other), radius, color, thickness)
