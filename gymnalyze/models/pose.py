@@ -18,6 +18,7 @@ class Pose:
                 y=(landmarks[LandmarkName.LEFT_SHOULDER].get("y") + landmarks[LandmarkName.RIGHT_SHOULDER].get("y")) / 2,
                 z=(landmarks[LandmarkName.LEFT_SHOULDER].get("z") + landmarks[LandmarkName.RIGHT_SHOULDER].get("z")) / 2,
                 visibility=(landmarks[LandmarkName.LEFT_SHOULDER].get("visibility") + landmarks[LandmarkName.RIGHT_SHOULDER].get("visibility")) / 2,
+                img_shape=img_shape
             ).to_dict(), 
         )
         # Add virtual landmarks: MID_HIP
