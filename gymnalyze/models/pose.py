@@ -1,15 +1,17 @@
-from typing import List, Dict
+from typing import List, Dict, Tuple
 from .landmark import Landmark
 from .body_segment import BodySegment
 from ..enums.landmark import LandmarkName
 from ..enums.body_segment import BodySegmentName
 
 class Pose:
-    def __init__(self, landmarks: List[Dict]):
+    def __init__(self, pose_detection, img_shape: Tuple[int, int]):
+
+        self.pose_detection = pose_detection
 
         landmarks = [ {
             "x": l.x, "y": l.y, "z": l.z, "visibility": l.visibility
-        } for l in landmarks ]
+        } for l in pose_detection.pose_landmarks.landmark ]
 
         # Add virtual landmarks: MID_SHOULDER
         landmarks.append(
