@@ -99,8 +99,15 @@ class BodySegment:
             "name": self.name
         }
 
+    def reversed(self)->'BodySegment':
+        return BodySegment.reverse(self)
+
+    @classmethod
+    def reverse(cls, body_segment)->'BodySegment':
+        return cls(body_segment.end_landmark, body_segment.start_landmark, name=body_segment.name)
+
     def draw(self, image, color:Tuple[int, int, int]=(0, 255, 0), thickness=2)->np.ndarray:
-        self.start_landmark.draw(image, color, thickness=-1)
+        self.start_landmark.draw(image, color, thickness=thickness)
         self.end_landmark.draw(image, color, thickness=-1)
         cv2.line(image, self.start_landmark.pixel_coordinates(image.shape[1], image.shape[0]), self.end_landmark.pixel_coordinates(image.shape[1], image.shape[0]), color, thickness)
         return image
