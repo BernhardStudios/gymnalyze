@@ -113,6 +113,10 @@ class BodySegment:
         return image
 
     def _draw_angle(self, image, angle, radius=50, color:Tuple[int, int, int]=(0, 255, 0), thickness=2)->np.ndarray:
+
+        if np.isnan(angle):
+            return image
+
         font = cv2.FONT_HERSHEY_SIMPLEX
         pos = self.start_landmark.pixel_coordinates(image.shape[1], image.shape[0])
         cv2.putText(image, f"{int(angle)}", pos, font, 1, color, thickness, cv2.LINE_AA)
@@ -144,5 +148,4 @@ class BodySegment:
     def draw_angle_between(self, image, other, radius=50, color:Tuple[int, int, int]=(0,255,0), thickness=2)->np.ndarray:
         other.draw(image, color, thickness)
         self.draw(image, color, thickness)
-        # todo: start point should be common to both segments
         return self._draw_angle(image, self.angle_between(other), radius, color, thickness)
