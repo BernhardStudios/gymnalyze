@@ -1,8 +1,8 @@
 from typing import List, Dict, Tuple
 from .landmark import Landmark
 from .body_segment import BodySegment
-from ..enums.landmark import LandmarkName
-from ..enums.body_segment import BodySegmentName
+from .body_joint import BodyJoint
+from ..enums import LandmarkName, BodySegmentName, BodyJointName
 
 class Pose:
     def __init__(self, pose_detection, img_shape: Tuple[int, int]):
@@ -39,6 +39,10 @@ class Pose:
         self.body_segments = {
             segment : BodySegment(self.landmarks[segment.landmarks()[0]], self.landmarks[segment.landmarks()[1]], name=segment.name) 
             for segment in BodySegmentName
+        }
+        self.body_joints = {
+            joint : BodyJoint(self.body_segments[joint.body_segments()[0]], self.body_segments[joint.body_segments()[1]], name=joint.name) 
+            for joint in BodyJointName
         }
 
     def __str__(self):

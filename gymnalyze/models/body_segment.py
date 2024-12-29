@@ -13,10 +13,13 @@ class BodySegment:
 
         # check both landmarks have the same image shape
         if self.start_landmark.width != self.end_landmark.width or self.start_landmark.height != self.end_landmark.height:
-            raise ValueError("Both landmarks should have the same image shape")
+            raise ValueError(f"[{self.name}] Both landmarks should have the same image shape")
 
         self.width = self.start_landmark.width
         self.height = self.start_landmark.height
+
+    def landmarks(self)->Tuple[Landmark, Landmark]:
+        return self.start_landmark, self.end_landmark
 
     def normalized_vector(self)->Tuple[float, float]:
         a = np.array(self.start_landmark.normalized_coordinates())
