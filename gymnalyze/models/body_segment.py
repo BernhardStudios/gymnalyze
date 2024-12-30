@@ -77,8 +77,7 @@ class BodySegment:
 
         # if angle_degrees < 0:
         #     angle_degrees = 360 + angle_degrees
-        # elif angle_degrees > 180:
-        #     angle_degrees = 360 - angle_degrees
+
         return angle_degrees
 
     def vertical_axis_angle(self)->int:

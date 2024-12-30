@@ -55,9 +55,9 @@ class BodyJointName(IntEnum):
             return (BodySegmentName.LEFT_SHIN, BodySegmentName.LEFT_FOOT)
         elif self == BodyJointName.RIGHT_ANKLE:
             return (BodySegmentName.RIGHT_SHIN, BodySegmentName.RIGHT_FOOT)
-        elif self == BodyJointName.LEFT_SHOULDER_TO_HIP:
-            return (BodySegmentName.LEFT_SHOULDER_TO_HIP, BodySegmentName.LEFT_THIGH)
-        elif self == BodyJointName.RIGHT_SHOULDER_TO_HIP:
-            return (BodySegmentName.RIGHT_SHOULDER_TO_HIP, BodySegmentName.RIGHT_THIGH)
+        # elif self == BodyJointName.LEFT_SHOULDER_TO_HIP:
+        #     return (BodySegmentName.LEFT_SHOULDER_TO_HIP, BodySegmentName.LEFT_THIGH)
+        # elif self == BodyJointName.RIGHT_SHOULDER_TO_HIP:
+        #     return (BodySegmentName.RIGHT_SHOULDER_TO_HIP, BodySegmentName.RIGHT_THIGH)
         else:
             raise ValueError(f"BodyJointName {self} is not supported.")
