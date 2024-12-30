@@ -47,9 +47,8 @@ class BodySegment:
         height = (self.AXIS_RADIUS_RATIO * self.RADIUS / img_height) if img_height else 0.5
         pos = self.start_landmark.normalized_coordinates()
         vertical_axis = BodySegment(
-            # start_landmark=Landmark(pos[0], pos[1] - height, 0, 1.0),
-            start_landmark=Landmark(pos[0], pos[1], 0, 1.0),
-            end_landmark=Landmark(pos[0], pos[1] + height, 0, 1.0)
+            start_landmark=Landmark(pos[0], pos[1], 0, 1.0, img_shape=(1, 1)),
+            end_landmark=Landmark(pos[0], pos[1] + height, 0, 1.0, img_shape=(1, 1))
         )
         return vertical_axis
 
@@ -57,9 +56,8 @@ class BodySegment:
         width = (self.AXIS_RADIUS_RATIO * self.RADIUS / img_width) if img_width else 0.5
         pos = self.start_landmark.normalized_coordinates()
         horizontal_axis = BodySegment(
-            # start_landmark=Landmark(pos[0] - width, pos[1], 0, 1.0),
-            start_landmark=Landmark(pos[0], pos[1], 0, 1.0),
-            end_landmark=Landmark(pos[0] + width, pos[1], 0, 1.0)
+            start_landmark=Landmark(pos[0], pos[1], 0, 1.0, img_shape=(1, 1)),
+            end_landmark=Landmark(pos[0] + width, pos[1], 0, 1.0, img_shape=(1, 1))
         )
         return horizontal_axis
 

@@ -30,11 +30,19 @@ class Pose:
                 y=(landmarks[LandmarkName.LEFT_HIP].get("y") + landmarks[LandmarkName.RIGHT_HIP].get("y")) / 2,
                 z=(landmarks[LandmarkName.LEFT_HIP].get("z") + landmarks[LandmarkName.RIGHT_HIP].get("z")) / 2,
                 visibility=(landmarks[LandmarkName.LEFT_HIP].get("visibility") + landmarks[LandmarkName.RIGHT_HIP].get("visibility")) / 2,
+                img_shape=img_shape
             ).to_dict()
         )
 
         self.landmarks = {
-            LandmarkName(i) : Landmark(lm.get("x"), lm.get("y"), lm.get("z"), lm.get("visibility"), name=LandmarkName(i).name) for i,lm in enumerate(landmarks)
+            LandmarkName(i) : Landmark(
+                x=lm.get("x"), 
+                y=lm.get("y"), 
+                z=lm.get("z"), 
+                visibility=lm.get("visibility"), 
+                name=LandmarkName(i).name,
+                img_shape=img_shape
+            ) for i,lm in enumerate(landmarks)
         }
         self.body_segments = {
             segment : BodySegment(self.landmarks[segment.landmarks()[0]], self.landmarks[segment.landmarks()[1]], name=segment.name) 

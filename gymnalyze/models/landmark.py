@@ -3,7 +3,7 @@ import cv2
 from typing import Tuple, Optional
 
 class Landmark:
-    def __init__(self, x, y, z, visibility, name:Optional[str]=None, img_shape:Tuple[int, int]=(500,500)):
+    def __init__(self, x, y, z, visibility, img_shape:Tuple[int, int], name:Optional[str]=None):
         self.x = x
         self.y = y
         self.z = z
