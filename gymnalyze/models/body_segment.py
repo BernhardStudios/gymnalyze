@@ -99,6 +99,14 @@ class BodySegment:
             "name": self.name
         }
 
+    @classmethod
+    def init_from_dict(cls, data)->'BodySegment':
+        return cls(
+            start_landmark=Landmark.init_from_dict(data["start_landmark"]),
+            end_landmark=Landmark.init_from_dict(data["end_landmark"]),
+            name=data["name"]
+        )
+
     def reversed(self)->'BodySegment':
         return BodySegment.reverse(self)
 

@@ -30,9 +30,8 @@ class BodyJoint:
         if self.end_body_segment.start_landmark != self.common_landmark:
             self.end_body_segment = self.end_body_segment.reversed()
 
-
-    def angle(self)->int:
-        return self.start_body_segment.angle(self.end_body_segment)
+    def angle(self)->float:
+        return self.start_body_segment.angle_between(self.end_body_segment)
 
     def draw(self, image, color:Tuple[int, int, int]=(0, 255, 0), radius=50, thickness=2)->np.ndarray:
         return self.start_body_segment.draw_angle_between(image, self.end_body_segment, radius, color, thickness)
@@ -46,3 +45,11 @@ class BodyJoint:
             "end_body_segment": self.end_body_segment.to_dict(),
             "name": self.name
         }
+
+    @classmethod
+    def init_from_dict(cls, data)->'BodyJoint':
+        return BodyJoint(
+            start_body_segment=BodySegment.init_from_dict(data["start_body_segment"]),
+            end_body_segment=BodySegment.init_from_dict(data["end_body_segment"]),
+            name=data["name"]
+        )
