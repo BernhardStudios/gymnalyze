@@ -1,9 +1,11 @@
 import cv2
+import json
 import mediapipe as mp
 import numpy as np
 from gymnalyze.models.pose import Pose
 from gymnalyze.utils import Color
 from gymnalyze.enums import BodySegmentName
+from gymnalyze.enums import LandmarkName, BodySegmentName, BodyJointName
 
 def main():
 
@@ -55,24 +57,26 @@ def main():
             # Define a white canvas with same dimensions as the frame
             canvas = np.ones_like(frame) * 255
 
-            # Draw body segments on the frame
-            for segment in my_pose.body_segments.values():
-                # if segment.name != BodySegmentName.LEFT_UPPER_ARM.name and segment.name != BodySegmentName.LEFT_FOREARM.name:
-                #     continue    
+            # # Draw body segments
+            # for segment in BodySegmentName:
+            #     my_pose.body_segments[segment].draw(canvas, color=Color.RED, thickness=2)
+            #     # draw vertical axis angle
+            #     my_pose.body_segments[segment].draw_vertical_axis_angle(canvas, radius=50, color=Color.BLUE, thickness=2)
 
-                segment.draw_vertical_axis_angle(canvas, radius=50, color=Color.LIME, thickness=2)
-                segment.draw_horizontal_axis_angle(canvas, radius=50, color=Color.GREEN, thickness=2)
-                segment.draw(canvas, color=Color.ORANGE, thickness=2)
-
-            # Draw pose landmarks on the frame
-            for landmark in my_pose.landmarks.values():
-                continue
-                landmark.draw(canvas, color=Color.LIME, radius=5, thickness=-1)
+            for joint in BodyJointName:
+                # if joint != 0:
+                #     continue
+                my_pose.body_joints[joint].draw(canvas, color=Color.GREEN, radius=50)
 
             # Blend the canvas with the frame
             # Define transparency as 0.5
             transparency = 0.25
             frame = cv2.addWeighted(frame, transparency, canvas, 1-transparency, 0)
+
+            # put frame number as text in the top left corner
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            org = (10, 30)  # Top left corner
+            frame = cv2.putText(frame, f"Frame: {frame_pos}", org, font, 1, Color.BLACK, 2, cv2.LINE_AA)
 
             # Display the resulting frame
             cv2.imshow('Demo', frame)
@@ -101,6 +105,14 @@ def main():
         elif key == ord('-'):  # '-' to decrease speed
             delay += 5  # Increase delay to decrease speed
             print("'-' pressed. Decreasing speed. Delay:", delay)
+        elif key == ord('s'): # save pose from current frame as dict
+            data = my_pose.to_dict()
+            with open(f'pose_data_frame_{frame_pos}.json', 'w') as f:
+                json.dump(data, f, indent=4)
+            print(f"Pose data saved to pose_data_frame_{frame_pos}.json")
+            image_path = f'frame_{frame_pos}.png'
+            cv2.imwrite(image_path, frame)
+            print(f"Frame saved as {image_path}")
 
     # Release the video capture object and close the display window
     cap.release()
