@@ -55,3 +55,10 @@ class Pose:
 
     def __str__(self):
         return f"PoseData with {len(self.landmarks)} landmarks"
+
+    def to_dict(self):
+        return {
+            "landmarks": {name.name: landmark.to_dict() for name, landmark in self.landmarks.items()},
+            "body_segments": {name.name: segment.to_dict() for name, segment in self.body_segments.items()},
+            "body_joints": {name.name: joint.to_dict() for name, joint in self.body_joints.items()}
+        }
