@@ -66,7 +66,7 @@ def main():
             for joint in BodyJointName:
                 # if joint != 0:
                 #     continue
-                my_pose.body_joints[joint].draw(canvas, color=Color.GREEN, radius=50)
+                canvas = my_pose.body_joints[joint].draw(canvas, color=Color.GREEN, radius=50)
 
             # Blend the canvas with the frame
             # Define transparency as 0.5

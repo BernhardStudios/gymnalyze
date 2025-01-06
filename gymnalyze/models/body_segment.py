@@ -125,14 +125,22 @@ class BodySegment:
         if np.isnan(angle):
             return image
 
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        pos = self.start_landmark.pixel_coordinates(image.shape[1], image.shape[0])
-        cv2.putText(image, f"{int(angle)}", pos, font, 1, color, thickness, cv2.LINE_AA)
+        # Save base image for later blending
+        base_img = image.copy()
+        
+        # Calculate the start and end angles
         start_angle = 0
         end_angle = angle
         rotation_angle = - self.horizontal_axis_angle()
-        cv2.ellipse(image, pos, (radius, radius), rotation_angle, start_angle, end_angle, color, thickness)
-                
+        pos = self.start_landmark.pixel_coordinates(image.shape[1], image.shape[0])
+
+        # Draw the ellipse
+        cv2.ellipse(image, pos, (radius, radius), rotation_angle, start_angle, end_angle, color, -1)
+        
+        # Blend the base image with the image
+        transparency = 0.85
+        image = cv2.addWeighted(base_img, transparency, image, 1-transparency, 0)
+
         # Mark the start point
         start_point = get_point_on_ellipse(pos, (radius, radius), rotation_angle, start_angle)
         cv2.circle(image, start_point, 5, (255, 0, 0), -1)  # Blue circle for start point
@@ -140,6 +148,10 @@ class BodySegment:
         # Mark the end point
         end_point = get_point_on_ellipse(pos, (radius, radius), rotation_angle, end_angle)
         cv2.circle(image, end_point, 5, (0, 0, 255), -1)  # Red circle for end point
+
+        # Put angle as text
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        cv2.putText(image, f"{int(angle)}", pos, font, 1, color, thickness, cv2.LINE_AA)
 
         return image
 
