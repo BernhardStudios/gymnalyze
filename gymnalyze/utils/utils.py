@@ -1,8 +1,3 @@
-def load_video(video_path):
-    import cv2
-    video = cv2.VideoCapture(video_path)
-    return video
-
 import cv2
 import numpy as np
 import math
